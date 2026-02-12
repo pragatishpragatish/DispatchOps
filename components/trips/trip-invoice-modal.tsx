@@ -22,7 +22,13 @@ interface TripInvoiceModalProps {
     created_at?: string
     load_requests?: {
       provider_id?: string
-      load_providers?: LoadProvider
+      load_providers?: {
+        id: string
+        company_name?: string
+        contact_person?: string | null
+        phone?: string | null
+        whatsapp?: string | null
+      }
     }
   }
 }
@@ -59,7 +65,7 @@ export function TripInvoiceModal({ isOpen, onClose, trip }: TripInvoiceModalProp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!provider) {
+    if (!provider || !provider.company_name) {
       alert('Provider information not found for this trip')
       return
     }
@@ -76,9 +82,9 @@ export function TripInvoiceModal({ isOpen, onClose, trip }: TripInvoiceModalProp
         provider: {
           id: provider.id,
           company_name: provider.company_name,
-          contact_person: provider.contact_person,
-          phone: provider.phone,
-          whatsapp: provider.whatsapp,
+          contact_person: provider.contact_person || null,
+          phone: provider.phone || null,
+          whatsapp: provider.whatsapp || null,
         },
         invoiceDate: formData.invoice_date,
         coordinationFee: parseFloat(formData.coordination_fee),
@@ -112,7 +118,7 @@ export function TripInvoiceModal({ isOpen, onClose, trip }: TripInvoiceModalProp
             </button>
           </div>
 
-          {!provider ? (
+          {!provider || !provider.company_name ? (
             <div className="text-center py-8">
               <p className="text-red-600 dark:text-red-400">Provider information not found for this trip</p>
               <button
