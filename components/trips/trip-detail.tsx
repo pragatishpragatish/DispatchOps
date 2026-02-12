@@ -61,7 +61,7 @@ export function TripDetail({ trip }: { trip: Trip }) {
     vehicle_condition_score: 3,
   })
 
-  const handleStatusUpdate = async (field: string, value: boolean | string) => {
+  const handleStatusUpdate = async (field: string, value: boolean | string | null) => {
     setLoading(true)
     const { error } = await supabase
       .from('trips')
