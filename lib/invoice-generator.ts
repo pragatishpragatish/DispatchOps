@@ -45,6 +45,7 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<void> {
   const contentWidth = pageWidth - (margin * 2)
   let yPos = margin
   let logoHeight = 0
+  let logoWidth = 0
   let logoAdded = false
 
   // Helper function to add text with wrapping
@@ -95,7 +96,7 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<void> {
       await new Promise<void>((resolve) => {
         img.onload = () => {
           try {
-            const logoWidth = 45
+            logoWidth = 45
             logoHeight = (img.height / img.width) * logoWidth
             doc.addImage(logoBase64, 'PNG', margin, margin, logoWidth, logoHeight)
             logoAdded = true
@@ -364,7 +365,7 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<void> {
   
   // Company details at bottom - centered with logo if available
   const companyDetailsY = footerY + 20
-  if (logoAdded && logoHeight > 0) {
+  if (logoAdded && logoHeight > 0 && logoWidth > 0) {
     // Add small logo in footer
     try {
       doc.addImage(logoBase64!, 'PNG', (pageWidth - 20) / 2, companyDetailsY - 3, 20, (logoHeight / logoWidth) * 20)
